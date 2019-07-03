@@ -1,7 +1,7 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <iostream>
-#include <SCL.h>
+ #include <SCL.h>
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -82,7 +82,7 @@ int main(int argc, char const *argv[]) {
 
 
     objl::Loader object.LoadFile(obj);
-    
+
     for (size_t i = 0; i < object.LoadedMeshes.size(); i++) {
 
         Mesh curMesh;
