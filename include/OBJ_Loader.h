@@ -1,5 +1,3 @@
-#ifndef _OBJ_LOADER_H_
-#define _OBJ_LOADER_H_
 // OBJ_Loader.h - A Single Header OBJ Model Loader
 
 #pragma once
@@ -651,7 +649,7 @@ namespace objl
 
 					if (temp.size() != 1)
 					{
-						for (unsigned int i = 0; i < temp.size() - 1; i++)
+						for (int i = 0; i < temp.size() - 1; i++)
 						{
 							pathtomat += temp[i] + "/";
 						}
@@ -688,13 +686,13 @@ namespace objl
 			file.close();
 
 			// Set Materials for each Mesh
-			for (unsigned int i = 0; i < MeshMatNames.size(); i++)
+			for (int i = 0; i < MeshMatNames.size(); i++)
 			{
 				std::string matname = MeshMatNames[i];
 
 				// Find corresponding material name in loaded materials
 				// when found copy material variables into mesh material
-				for (unsigned int j = 0; j < LoadedMaterials.size(); j++)
+				for (int j = 0; j < LoadedMaterials.size(); j++)
 				{
 					if (LoadedMaterials[j].name == matname)
 					{
@@ -724,7 +722,7 @@ namespace objl
 		std::vector<Material> LoadedMaterials;
 
 	private:
-		// Generate vertices from a list of positions,
+		// Generate vertices from a list of positions, 
 		//	tcoords, normals and a face line
 		void GenVerticesFromRawOBJ(std::vector<Vertex>& oVerts,
 			const std::vector<Vector3>& iPositions,
@@ -819,8 +817,8 @@ namespace objl
 			}
 
 			// take care of missing normals
-			// these may not be truly acurate but it is the
-			// best they get for not compiling a mesh with normals
+			// these may not be truly acurate but it is the 
+			// best they get for not compiling a mesh with normals	
 			if (noNormal)
 			{
 				Vector3 A = oVerts[0].Position - oVerts[1].Position;
@@ -880,7 +878,7 @@ namespace objl
 
 					// pNext = the next vertex in the list
 					Vertex pNext;
-					if ((unsigned int)i == tVerts.size() - 1)
+					if (i == tVerts.size() - 1)
 					{
 						pNext = tVerts[0];
 					}
@@ -1167,5 +1165,3 @@ namespace objl
 		}
 	};
 }
-
-#endif

@@ -1,15 +1,14 @@
 #ifndef _LOADER_H_
 #define _LOADER_H_
 
-#include <glad/glad.h>
-#include <OBJ_Loader.h>
+// #include <glad/glad.h>
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <string.h>
 #include <Mesh.h>
-#include <SCL.h>
+// #include <SCL.h>
 
 class loader{
 public:
@@ -31,7 +30,6 @@ private:
     std::string Ni;
     std::string d;
     std::string illum;
-    objl::Loader object;
     std::vector<Mesh> meshes;
 };
 

@@ -1,6 +1,7 @@
 #include <Mesh.h>
+#include <iostream>
 
-Mesh::Mesh(){
+Mesh::Mesh(std::vector<float> &vtx, std::vector<unsigned int> &idx){
     this->ambientColorName = std::string("ambientColor");
     this->diffuseColorName = std::string("diffuseColor");
     this->specularColorName = std::string("specularColor");
@@ -18,6 +19,9 @@ Mesh::Mesh(){
     glGenVertexArrays(1, &(this->VAO));
     glGenBuffers(1, &(this->VBO));
 	glGenBuffers(1, &(this->EBO));
+
+    this->vertices = vtx;
+    this->indices = idx;
 
     glBindVertexArray(this->VAO);
         // Setup vertex data
@@ -37,7 +41,6 @@ Mesh::Mesh(){
         glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(6 * sizeof(GLfloat)));
         glEnableVertexAttribArray(2);
 
-        glBindBuffer(GL_ARRAY_BUFFER, 0);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
     glBindVertexArray(0);
@@ -49,7 +52,7 @@ void Mesh::draw(unsigned int shader){
 
     glUniform3f(glGetUniformLocation(shader, this->ambientColorName.c_str()), this->Ka.x, this->Ka.y, this->Ka.z);
     glUniform3f(glGetUniformLocation(shader, this->diffuseColorName.c_str()), this->Kd.x, this->Kd.y, this->Kd.z);
-    glUniform3f(glGetUniformLocation(shader, this->ambientColorName.c_str()), this->Ks.x, this->Ks.y, this->Ks.z);
+    glUniform3f(glGetUniformLocation(shader, this->specularColorName.c_str()), this->Ks.x, this->Ks.y, this->Ks.z);
     glUniform1f(glGetUniformLocation(shader, this->specularExponentName.c_str()), this->Ns);
     glUniform1f(glGetUniformLocation(shader, this->opticalDensityName.c_str()), this->Ni);
     glUniform1f(glGetUniformLocation(shader, this->dissolve.c_str()), this->d);
@@ -57,44 +60,75 @@ void Mesh::draw(unsigned int shader){
 
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, 0);
-    if (ambientTexture)
+    if (ambientTexture){
         glBindTexture(GL_TEXTURE_2D, this->ambientTexture);
-
+    }
     glActiveTexture(GL_TEXTURE1);
     glBindTexture(GL_TEXTURE_2D, 0);
-    if (diffuseTexture)
+    if (diffuseTexture){
         glBindTexture(GL_TEXTURE_2D, this->diffuseTexture);
-
+    }
     glActiveTexture(GL_TEXTURE2);
     glBindTexture(GL_TEXTURE_2D, 0);
-    if (specularTexture)
+    if (specularTexture){
         glBindTexture(GL_TEXTURE_2D, this->specularTexture);
-
+    }
     glActiveTexture(GL_TEXTURE3);
     glBindTexture(GL_TEXTURE_2D, 0);
-    if (alphaTexture)
+    if (alphaTexture){
         glBindTexture(GL_TEXTURE_2D, this->alphaTexture);
-
+    }
     glActiveTexture(GL_TEXTURE4);
     glBindTexture(GL_TEXTURE_2D, 0);
-    if (bumpTexture)
+    if (bumpTexture){
         glBindTexture(GL_TEXTURE_2D, this->bumpTexture);
+    }
 
-
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->EBO);
     glBindVertexArray(this->VAO);
+    glBindBuffer(GL_ARRAY_BUFFER, this->VBO);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->EBO);
 	glDrawElements(GL_TRIANGLES, this->indices.size(), GL_UNSIGNED_INT, 0);
 
 
 }
 
 
-void Mesh::setVertices(std::vector<float> &vertices){
-    this->vertices = vertices;
-}
-void Mesh::setIndices(std::vector<float> &indices){
-    this->indices = indices;
-}
+// void Mesh::setVertices(std::vector<float> &vertices){
+//     this->vertices = vertices;
+//     glBindVertexArray(this->VAO);
+//         // Setup vertex data
+//         glBindBuffer(GL_ARRAY_BUFFER, this->VBO);
+//         glBufferData(GL_ARRAY_BUFFER, sizeof(float)*(this->vertices).size(), this->vertices.data(), GL_STATIC_DRAW);
+//
+//         glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)0);
+//         glEnableVertexAttribArray(0);
+//
+//         glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
+//         glEnableVertexAttribArray(1);
+//
+//         glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(6 * sizeof(GLfloat)));
+//         glEnableVertexAttribArray(2);
+//
+//         glBindBuffer(GL_ARRAY_BUFFER, 0);
+//         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+//
+//     glBindVertexArray(0);
+//
+// }
+// void Mesh::setIndices(std::vector<float> &indices){
+//     this->indices = indices;
+//     glBindVertexArray(this->VAO);
+//
+//         // Setup index data
+//         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->EBO);
+//         glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(float)*(this->indices).size(), this->indices.data(), GL_STATIC_DRAW);
+//
+//         glBindBuffer(GL_ARRAY_BUFFER, 0);
+//         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+//
+//     glBindVertexArray(0);
+//
+// }
 void Mesh::setAmbientColor(glm::vec3 Ka){
     this->Ka = Ka;
 }

@@ -12,10 +12,10 @@
 
 class Mesh{
 public:
-    Mesh();
+    Mesh(std::vector<float> &vertices, std::vector<unsigned int> &indices);
     void draw(unsigned int);
-    void setVertices(std::vector<float> &vertices); // Input should be 3 float to vertex pos, 3 for normal, and 2 for tex coord
-    void setIndices(std::vector<float> &indices);
+    // void setVertices(std::vector<float> &vertices); // Input should be 3 float to vertex pos, 3 for normal, and 2 for tex coord
+    // void setIndices(std::vector<float> &indices);
     void setAmbientColor(glm::vec3);
     void setAmbientColor(std::string shaderName, glm::vec3);
     void setAmbientColorName(std::string shaderName);
@@ -43,9 +43,9 @@ public:
     void loadSpecularTexture(std::string);
     void loadAlphaTexture(std::string);
     void loadBumpMap(std::string);
-private:
     std::vector<float> vertices;
-    std::vector<float> indices;
+    std::vector<unsigned int> indices;
+private:
     glm::vec3 Ka;
     glm::vec3 Kd;
     glm::vec3 Ks;

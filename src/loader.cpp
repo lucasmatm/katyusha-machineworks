@@ -1,18 +1,19 @@
 #include <loader.h>
+#include <OBJ_Loader.h>
 #include <FreeImage.h>
 
 
 loader::loader(std::string obj){
+    objl::Loader object;
     try{
-        this->object.LoadFile(obj);
+        object.LoadFile(obj);
     }catch(std::exception e){
         throw(e.what());
     }
     for (size_t i = 0; i < object.LoadedMeshes.size(); i++) {
 
-        Mesh curMesh;
         std::vector<float> vertices;
-        std::vector<float> indices;
+        std::vector<unsigned int> indices;
         for (size_t j = 0; j < object.LoadedMeshes[i].Vertices.size(); j++) {
             vertices.push_back(object.LoadedMeshes[i].Vertices[j].Position.X);
             vertices.push_back(object.LoadedMeshes[i].Vertices[j].Position.Y);
@@ -28,8 +29,9 @@ loader::loader(std::string obj){
         for (size_t j = 0; j < object.LoadedMeshes[i].Indices.size(); j++){
             indices.push_back(object.LoadedMeshes[i].Indices[j]);
         }
-        curMesh.setVertices(vertices);
-        curMesh.setIndices(indices);
+
+        Mesh curMesh(vertices, indices);
+
         curMesh.setAmbientColor(glm::vec3(object.LoadedMeshes[i].MeshMaterial.Ka.X, object.LoadedMeshes[i].MeshMaterial.Ka.Y, object.LoadedMeshes[i].MeshMaterial.Ka.Z));
         curMesh.setDiffuseColor(glm::vec3(object.LoadedMeshes[i].MeshMaterial.Kd.X, object.LoadedMeshes[i].MeshMaterial.Kd.Y, object.LoadedMeshes[i].MeshMaterial.Kd.Z));
         curMesh.setSpecularColor(glm::vec3(object.LoadedMeshes[i].MeshMaterial.Ks.X, object.LoadedMeshes[i].MeshMaterial.Ks.Y, object.LoadedMeshes[i].MeshMaterial.Ks.Z));
